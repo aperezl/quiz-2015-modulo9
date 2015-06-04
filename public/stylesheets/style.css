@@ -34,3 +34,16 @@ footer {
 nav span {
   margin: 0 10px 0 0;
 }
+
+.author h3 {
+  margin: 0 0 20px 0;
+}
+.author p {
+  float: left;
+}
+
+.author img {
+  float: right;
+  border-radius: 50%;
+  width: 120px;
+}
