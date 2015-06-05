@@ -19,7 +19,7 @@ exports.index = function(req, res) {
   var where = {};
   var search = req.query.search || '';
   if(req.query.search) {
-    where = {where: ["pregunta like ?", '%' + search.replace(' ', '%') + '%']};
+    where = {where: ["pregunta like ?", '%' + search.replace(' ', '%') + '%'], order: 'pregunta'};
   }
   models.Quiz.findAll(where).then(function(quizes) {
     res.render('quizes/index.ejs', {quizes: quizes, query: search});
