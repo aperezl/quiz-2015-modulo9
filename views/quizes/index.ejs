@@ -1,3 +1,12 @@
+<form name="busqueda" id="busqueda" action="/quizes">
+	<label for="search">Buscar preguntas</label>
+	<input type="text" name="search" id="search" value="<%=query%>" placeholder="Indroduzca su búsqueda" />
+	<input type="submit" value="Buscar" />
+	<%if(query) { %>
+		<a href="/quizes">Mostrar todos los resultados</a>
+	<% }; %>
+</form>
+
 <table>
 <% var i; for(i=0; i<quizes.length; i++) { %>
 <tr><td><a href="/quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
