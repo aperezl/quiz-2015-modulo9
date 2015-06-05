@@ -47,3 +47,8 @@ nav span {
   border-radius: 50%;
   width: 120px;
 }
+
+#ErrorMsgs {
+  color: #f61;
+  font-size: smaller;
+}
