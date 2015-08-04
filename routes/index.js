@@ -12,6 +12,7 @@ router.get('/', function(req, res) {
 
 //Autoload
 router.param('quizId', quizController.load);
+router.param('commentId', commentController.load);
 
 router.get('/login',  sessionController.new);
 router.post('/login', sessionController.create);
@@ -29,7 +30,7 @@ router.delete('/quizes/:quizId(\\d+)',    sessionController.loginRequired, quizC
 
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
-
+router.get('/quizes/:quizId(\\d+)/comment/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
 router.get('/author', function(req, res) {
   res.render('author.ejs', {errors: []});
 });
