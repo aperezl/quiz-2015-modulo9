@@ -1,0 +1,19 @@
+{
+  "name": "quiz",
+  "version": "0.0.0",
+  "homepage": "https://github.com/aperezl/quiz-2015-modulo9",
+  "authors": [
+    "Antonio Manuel Pérez López <aperezl@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}
