@@ -25,39 +25,63 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
 
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 var Comment  = sequelize.import(path.join(__dirname, 'comment'));
+var User = sequelize.import(path.join(__dirname, 'user'));
 
 Comment.belongsTo(Quiz);
 Quiz.hasMany(Comment);
 
+Quiz.belongsTo(User);
+User.hasMany(Quiz);
+
 exports.Quiz = Quiz;
 exports.Comment = Comment;
+exports.User = User;
 
 sequelize.sync().then(function() {
-  Quiz.count().then(function(count) {
+
+  User.count().then(function(count) {
     if(count === 0) {
-      Quiz.create({
-        pregunta: 'Capital de Italia',
-        respuesta: 'Roma'
-      });
-      Quiz.create({
-        pregunta: 'Capital de Portugal',
-        respuesta: 'Lisboa'
-      });
-      Quiz.create({
-        pregunta: 'Capital de España',
-        respuesta: 'Madrid'
-      });
-      Quiz.create({
-        pregunta: 'Capital de Francia',
-        respuesta: 'Paris'
-      });
-      Quiz.create({
-        pregunta: 'Capital de Alemania',
-        respuesta: 'Berlin'
-      })
+      User.bulkCreate([
+        {username: 'admin', password: '1234', isAdmin: true},
+        {username: 'pepe', password: '5678'}
+      ])
       .then(function() {
-        console.log('Base de datos inicializada');
-      });
+        console.log('Base de datos (tabla user) inicializada');
+        Quiz.count().then(function(count) {
+          if(count === 0) {
+            Quiz.create({
+              pregunta: 'Capital de Italia',
+              respuesta: 'Roma',
+              UserId: 2
+            });
+            Quiz.create({
+              pregunta: 'Capital de Portugal',
+              respuesta: 'Lisboa',
+              UserId: 2
+            });
+            Quiz.create({
+              pregunta: 'Capital de España',
+              respuesta: 'Madrid',
+              UserId: 2
+            });
+            Quiz.create({
+              pregunta: 'Capital de Francia',
+              respuesta: 'Paris',
+              UserId: 2
+            });
+            Quiz.create({
+              pregunta: 'Capital de Alemania',
+              respuesta: 'Berlin',
+              UserId: 2
+            })
+            .then(function() {
+              console.log('Base de datos inicializada');
+            });
+          }
+        });
+      })
     }
   });
+
+
 });
