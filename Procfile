@@ -1,1 +1,1 @@
-web: supervisor ./bin/www
+web: nodemon ./bin/www

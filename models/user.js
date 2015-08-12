@@ -35,10 +35,13 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       set: function(password) {
+        console.log('password', password);
+        console.log('key', key)
         var encripted = crypto
-                        .createHmac('sha1', key)
+                         .createHmac('sha1', key)
                         .update(password)
                         .digest('hex');
+        console.log('encripted', encripted)
         //Evita password vacíos
         if(password === '' ) {
           encripted = '';

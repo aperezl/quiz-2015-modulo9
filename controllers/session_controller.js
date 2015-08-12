@@ -26,7 +26,8 @@ exports.create = function(req, res) {
     }
     req.session.user = {
       id: user.id,
-      username: user.username
+      username: user.username,
+      isAdmin: user.isAdmin
     };
     res.redirect(req.session.redir.toString());
   });
