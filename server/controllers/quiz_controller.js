@@ -72,6 +72,7 @@ exports.new = function(req, res) {
 
 //POST /quizes/create
 exports.create = function(req, res) {
+  console.log(req.body, req.session.user.id);
   req.body.quiz.UserId = req.session.user.id;
   if(req.file) {
     req.quiz.image = req.file.filename;

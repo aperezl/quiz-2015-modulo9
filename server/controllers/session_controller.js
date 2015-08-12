@@ -29,7 +29,8 @@ exports.create = function(req, res) {
       username: user.username,
       isAdmin: user.isAdmin
     };
-    res.redirect(req.session.redir.toString());
+    //res.redirect(req.session.redir.toString());
+    res.send(req.session.user);
   });
 };
 

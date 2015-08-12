@@ -12,6 +12,21 @@ var routes = require('./routes/index');
 
 var app = express();
 
+//MW que permite a la function req.render responder a peticiones AJAX
+app.use(function(req, res, next) {
+  var _render = res.render;
+
+  res.render = function(view, options, fn) {
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      res.send(options);
+    }else {
+      _render.call(this, view, options, fn);
+    }
+  }
+  next();
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
