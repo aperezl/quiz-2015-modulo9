@@ -32,7 +32,7 @@ exports.load = function(req, res, next, quizId) {
 exports.index = function(req, res) {
   var where = {};
   var search = req.query.search || '';
-  console.log('por aqui')
+
   if(req.query.search) {
     where = {where: ["pregunta like ?", '%' + search.replace(' ', '%') + '%'], order: 'pregunta'};
   }
@@ -68,6 +68,9 @@ exports.new = function(req, res) {
 //POST /quizes/create
 exports.create = function(req, res) {
   req.body.quiz.UserId = req.session.user.id;
+  if(req.files.image) {
+    req.body.quiz.image = req.files.image.name;
+  }
   var quiz = models.Quiz.build(req.body.quiz);
   quiz
   .validate()
@@ -93,9 +96,13 @@ exports.edit = function(req, res) {
 
 exports.update = function(req, res) {
   req.quiz.pregunta = req.body.quiz.pregunta;
+  if(req.file) {
+
+    req.quiz.image = req.file.filename;
+  }
   req.quiz.respuesta = req.body.quiz.respuesta;
   req.quiz.tema = req.body.quiz.tema;
-  console.log('req.body.quiz', req.body.quiz)
+  
 
   req.quiz
   .validate()
@@ -104,7 +111,7 @@ exports.update = function(req, res) {
       res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
     } else {
       req.quiz
-      .save( { fields: ['pregunta', 'respuesta', 'tema'] })
+      .save( { fields: ['pregunta', 'respuesta', 'tema', 'image'] })
       .then(function() {
         res.redirect('/quizes');
       });

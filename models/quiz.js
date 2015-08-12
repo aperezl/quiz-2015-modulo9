@@ -24,6 +24,9 @@ module.exports = function(sequelize, DataTypes) {
             msg: '-> Falta Categoría'
           }
         }
+      },
+      image: {
+        type: DataTypes.STRING
       }
     });
 };
