@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
 var session = require('express-session');
-
+var cors = require('cors');
 var routes = require('./routes/index');
 
 var app = express();
@@ -41,7 +41,7 @@ app.use(cookieParser('Quiz 2015'));
 app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 //Autologout
 app.use(function(req, res, next) {
   if(req.session.user && req.session.lastVisit) {
