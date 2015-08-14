@@ -1,3 +1,6 @@
+process.env.DATABASE_URL= "sqlite://:@:/"
+process.env.DATABASE_STORAGE="quiz.sqlite"
+process.env.PASSWORD_ENCRYPTION_KEY= "asdfghjklzxcvbnmqwertyuiop"
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -23,6 +26,9 @@ app.use(function(req, res, next) {
       _render.call(this, view, options, fn);
     }
   }
+  if(req.xhr || req.headers.accept.indexOf('json') > -1) {
+    req.isAjax = true;
+  }
   next();
 });
 
@@ -41,6 +47,7 @@ app.use(cookieParser('Quiz 2015'));
 app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.options('*', cors()); 
 app.use(cors());
 //Autologout
 app.use(function(req, res, next) {

@@ -1,0 +1,26 @@
+<html ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
+
+	<script type="text/javascript" src="js/services/quiz_factory.js"></script>
+	<script type="text/javascript" src="js/services/comment_factory.js"></script>
+	<script type="text/javascript" src="js/services/user_factory.js"></script>
+
+	<script type="text/javascript" src="js/app.js"></script>
+</head>
+<body>
+<div ng-controller="mCtrl">
+	<div ng-repeat="quiz in quizes2">
+	--<a href="#" ng-click="getQuiz(quiz.id)">{{quiz.pregunta}}</a>
+	</div>
+	<div>
+		--{{quiz.pregunta}}-{{quiz.respuesta}}--
+	</div>
+</div>
+
+
+	
+</body>
+</html>

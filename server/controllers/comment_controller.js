@@ -59,7 +59,11 @@ exports.create = function(req, res) {
       comment
       .save()
       .then(function() {
-        res.redirect('/quizes/' + req.params.quizId);
+        if(req.isAjax) {
+          res.send('ok');
+        } else {
+          res.redirect('/quizes/' + req.params.quizId);          
+        }
       });
     }
   });
