@@ -1,8 +1,33 @@
+var jwt = require('jwt-simple');
+var key = process.env.PASSWORD_ENCRYPTION_KEY;
+
+var createToken = function(user) {
+  var payload = {
+    sub: user.id,
+    username: user.username,
+    isAdmin: user.isAdmin
+  };
+
+  return jwt.encode(payload, '1234');
+}
+
 exports.loginRequired = function(req, res, next) {
   if(req.session.user) {
     next();
   } else {
-    res.redirect('/login');
+    if(req.isAjax) {
+      if(!req.headers.authorization) {
+        return res.status(403).send({message: "Tu petición no tiene cabecera de autorización"});
+      }
+      var token = req.headers.authorization.split(" ")[1];
+      var payload = jwt.decode(token, key);
+      req.user = req.user || {};
+      req.user.id = payload.sub;
+      req.user.isAdmin = payload.isAdmin;
+      next();
+    } else {
+      res.redirect('/login');
+    }
   }
 };
 
@@ -21,7 +46,11 @@ exports.create = function(req, res) {
   userController.autenticar(login, password, function(error, user) {
     if(error) {
       req.session.errors = [{'message': 'Se ha producido un error: '+error}];
-      res.redirect('/login');
+      if(req.isAjax) {
+        res.send({error: 'Se ha producido un error: '+error});
+      } else {
+        res.redirect('/login');
+      }
       return;
     }
     req.session.user = {
@@ -29,8 +58,11 @@ exports.create = function(req, res) {
       username: user.username,
       isAdmin: user.isAdmin
     };
-    //res.redirect(req.session.redir.toString());
-    res.send(req.session.user);
+    if(req.isAjax) {
+      res.send({user: req.session.user, sessionID: req.sessionID, token: createToken(user)});
+    } else {
+      res.redirect(req.session.redir.toString());
+    }
   });
 };
 

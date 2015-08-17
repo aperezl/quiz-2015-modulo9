@@ -2,8 +2,13 @@ var models = require('../models/models.js');
 
 exports.ownershipRequired = function(req, res, next) {
   var objQuizOwner = req.quiz.UserId;
-  var logUser = req.session.user.id;
-  var isAdmin = req.session.user.isAdmin;
+  if(req.headers.authorization) {
+    var logUser = req.user.id;
+    var isAdmin = req.user.isAdmin;
+  } else {
+    var logUser = req.session.user.id;
+    var isAdmin = req.session.user.isAdmin;
+  }
 
   if(isAdmin || objQuizOwner === logUser) {
     next();
@@ -72,7 +77,6 @@ exports.new = function(req, res) {
 
 //POST /quizes/create
 exports.create = function(req, res) {
-  console.log(req.body, req.session.user.id);
   req.body.quiz.UserId = req.session.user.id;
   if(req.file) {
     req.quiz.image = req.file.filename;
@@ -118,7 +122,11 @@ exports.update = function(req, res) {
       req.quiz
       .save( { fields: ['pregunta', 'respuesta', 'tema', 'image'] })
       .then(function() {
-        res.redirect('/quizes');
+        if(req.isAjax()) {
+          response.send('ok');
+        } else {
+          res.redirect('/quizes');
+        }
       });
     }
   });
