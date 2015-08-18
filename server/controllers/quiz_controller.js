@@ -77,7 +77,17 @@ exports.new = function(req, res) {
 
 //POST /quizes/create
 exports.create = function(req, res) {
-  req.body.quiz.UserId = req.session.user.id;
+  console.log('--------');
+  console.log(req.user);
+  if(req.session.user) {
+    req.body.quiz.UserId = req.session.user.id;
+  } else {
+    if(req.isAjax) {
+      console.log(req.body.quiz);
+      req.body.quiz.UserId = req.user.id;
+    }
+  }
+
   if(req.file) {
     req.quiz.image = req.file.filename;
   }
@@ -93,7 +103,11 @@ exports.create = function(req, res) {
         fields: ["pregunta", "respuesta", "tema", "UserId"]
       })
       .then(function() {
-        res.redirect('/quizes');
+        if(req.isAjax) {
+          res.send('ok');
+        } else {
+          res.redirect('/quizes');
+        }
       })
     }
   })
@@ -122,8 +136,8 @@ exports.update = function(req, res) {
       req.quiz
       .save( { fields: ['pregunta', 'respuesta', 'tema', 'image'] })
       .then(function() {
-        if(req.isAjax()) {
-          response.send('ok');
+        if(req.isAjax) {
+          res.send('ok');
         } else {
           res.redirect('/quizes');
         }
@@ -134,6 +148,10 @@ exports.update = function(req, res) {
 
 exports.destroy = function(req, res) {
   req.quiz.destroy().then(function() {
-    res.redirect('/quizes');
+    if(req.isAjax) {
+      res.send('ok');
+    } else {
+      res.redirect('/quizes');
+    }
   }).catch(function(error) {next(error)});
 }

@@ -8,7 +8,7 @@ var createToken = function(user) {
     isAdmin: user.isAdmin
   };
 
-  return jwt.encode(payload, '1234');
+  return jwt.encode(payload, key);
 }
 
 exports.loginRequired = function(req, res, next) {
