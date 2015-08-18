@@ -1,5 +1,5 @@
 <%if (quiz.image) { %>
-  <p><img class="quiz_img" src="/media/<%=quiz.image%>"></p>
+  <p><img class="quiz_img" src="/quizes/<%=quiz.id%>/image"></p>
 <%}%>
     <form method="get" action="/quizes/<%=quiz.id%>/answer">
       <p>Pregunta: <%= quiz.pregunta %></p>

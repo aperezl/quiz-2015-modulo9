@@ -118,11 +118,17 @@ exports.edit = function(req, res) {
   res.render('quizes/edit', {quiz: quiz, errors: []});
 }
 
+
+exports.image = function(req, res) {
+  res.send(req.quiz.image);
+}
+
 exports.update = function(req, res) {
   req.quiz.pregunta = req.body.quiz.pregunta;
   if(req.file) {
-    req.quiz.image = req.file.filename;
+    req.quiz.image = req.file.buffer;
   }
+  console.log(req.file.buffer);
   req.quiz.respuesta = req.body.quiz.respuesta;
   req.quiz.tema = req.body.quiz.tema;
 

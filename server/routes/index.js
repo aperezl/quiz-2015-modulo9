@@ -1,6 +1,8 @@
 var express = require('express');
 var multer = require('multer');
-var upload = multer({dest: './public/media'}).single('image');
+var storage = multer.memoryStorage()
+var upload = multer({ storage: storage }).single('image');
+//var upload = multer({dest: './public/media'}).single('image');
 
 var router = express.Router();
 
@@ -45,6 +47,7 @@ router.put('/quizes/:quizId(\\d+)',       sessionController.loginRequired, uploa
 router.delete('/quizes/:quizId(\\d+)',    sessionController.loginRequired, quizController.ownershipRequired, quizController.destroy);
 router.get('/user/:userId(\\d+)/quizes',  quizController.index);
 
+router.get('/quizes/:quizId(\\d+)/image', quizController.image);
 
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);

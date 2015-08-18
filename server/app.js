@@ -66,7 +66,7 @@ app.use(function(req, res, next) {
   if(!req.session.redir) {
     req.session.redir = '/';
   }
-  if(!req.path.match(/\login|\/logout|\/user/)) {
+  if(!req.path.match(/\login|\/logout|\/image|\/user/)) {
     req.session.redir = req.path;
   }
   res.locals.session = req.session;
